@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KM Dynamic Labs — Bitcoin Mining Intelligence</title>
+  <meta name="description" content="Gain an edge in Bitcoin mining. Join the KM Dynamic Labs insider list for strategy, market analysis, and exclusive mining insights." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #090c10;
+      --bg2:      #0f1318;
+      --border:   #1e2530;
+      --gold:     #f5a623;
+      --gold-dim: #c8841a;
+      --text:     #e8eaf0;
+      --muted:    #7a8394;
+      --green:    #22c55e;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── GRID BACKGROUND ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(245,166,35,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245,166,35,.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      height: 64px;
+      background: rgba(9,12,16,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: .04em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .logo span { color: var(--gold); }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .5rem 1.25rem;
+      background: var(--gold);
+      color: #000;
+      font-weight: 700;
+      font-size: .85rem;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background .2s;
+    }
+    .nav-cta:hover { background: #ffc04a; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 5% 60px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .35rem 1rem;
+      border: 1px solid rgba(245,166,35,.35);
+      border-radius: 999px;
+      font-family: 'Space Mono', monospace;
+      font-size: .75rem;
+      color: var(--gold);
+      margin-bottom: 2rem;
+      background: rgba(245,166,35,.07);
+    }
+
+    .badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 6px var(--green);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%,100% { opacity: 1; }
+      50%      { opacity: .4; }
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -.02em;
+      max-width: 800px;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 em {
+      font-style: normal;
+      color: var(--gold);
+    }
+
+    .sub {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--muted);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ── FORM ── */
+    .form-wrap {
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto 1.25rem;
+    }
+
+    .form-row {
+      display: flex;
+      gap: .5rem;
+    }
+
+    .form-row input[type="email"] {
+      flex: 1;
+      padding: .9rem 1.1rem;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: .95rem;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color .2s;
+    }
+
+    .form-row input[type="email"]:focus {
+      border-color: var(--gold);
+    }
+
+    .form-row input[type="email"]::placeholder { color: var(--muted); }
+
+    .btn-primary {
+      padding: .9rem 1.5rem;
+      background: var(--gold);
+      color: #000;
+      font-weight: 700;
+      font-size: .95rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background .2s, transform .1s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .btn-primary:hover  { background: #ffc04a; }
+    .btn-primary:active { transform: scale(.97); }
+
+    .form-note {
+      font-size: .78rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* success state */
+    .success-msg {
+      display: none;
+      padding: 1rem 1.5rem;
+      background: rgba(34,197,94,.1);
+      border: 1px solid rgba(34,197,94,.3);
+      border-radius: 8px;
+      color: var(--green);
+      font-size: .95rem;
+      text-align: center;
+    }
+
+    /* ── SOCIAL PROOF ── */
+    .proof {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      margin-top: 2.5rem;
+      font-size: .85rem;
+      color: var(--muted);
+    }
+
+    .avatars {
+      display: flex;
+    }
+
+    .avatars span {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      border: 2px solid var(--bg);
+      background: var(--bg2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .65rem;
+      margin-left: -8px;
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .avatars span:first-child { margin-left: 0; }
+
+    /* ── FEATURES ── */
+    .features {
+      position: relative;
+      z-index: 1;
+      padding: 80px 5%;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: .75rem;
+      color: var(--gold);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .features h2 {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 800;
+      margin-bottom: 3rem;
+      max-width: 520px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      transition: border-color .2s, transform .2s;
+    }
+
+    .card:hover {
+      border-color: rgba(245,166,35,.4);
+      transform: translateY(-3px);
+    }
+
+    .card-icon {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: .5rem;
+    }
+
+    .card p {
+      font-size: .9rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── FOOTER CTA ── */
+    .footer-cta {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 80px 5% 100px;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-cta h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 900;
+      margin-bottom: 1rem;
+    }
+
+    .footer-cta p {
+      color: var(--muted);
+      margin-bottom: 2rem;
+      font-size: 1rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 1.5rem 5%;
+      border-top: 1px solid var(--border);
+      font-size: .8rem;
+      color: var(--muted);
+    }
+
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 540px) {
+      .form-row { flex-direction: column; }
+      .nav-cta  { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="logo">KM<span>▸</span>Dynamic Labs</a>
+    <a href="#signup" class="nav-cta">Get Insights →</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="badge">Bitcoin Mining Intelligence</div>
+
+    <h1>Mine Smarter.<br><em>Not Just Harder.</em></h1>
+
+    <p class="sub">
+      KM Dynamic Labs delivers insider-level analysis on Bitcoin mining operations,
+      hashrate trends, and profitability strategies — straight to your inbox.
+    </p>
+
+    <!-- EMAIL FORM -->
+    <div class="form-wrap" id="signup">
+      <form class="form-row" id="emailForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <input type="email" name="email" placeholder="Enter your email address" required autocomplete="email" />
+        <button type="submit" class="btn-primary">Join Free →</button>
+      </form>
+      <div class="success-msg" id="successMsg">
+        ✅ You're on the list! Check your inbox for a welcome note.
+      </div>
+      <p class="form-note" style="margin-top:.75rem;">No spam, ever. Unsubscribe anytime.</p>
+    </div>
+
+    <!-- SOCIAL PROOF -->
+    <div class="proof">
+      <div class="avatars">
+        <span>JT</span><span>MR</span><span>AK</span><span>SL</span>
+      </div>
+      <span>Join fellow miners already on the list</span>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <p class="section-label">What You'll Get</p>
+    <h2>Everything you need to stay ahead of the network.</h2>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">⛏️</div>
+        <h3>Mining Operations Intel</h3>
+        <p>Real-world breakdowns of mining setup performance, hardware ROI, and operational costs from active operations.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <h3>Hashrate & Difficulty Analysis</h3>
+        <p>Track network difficulty adjustments, hashrate trends, and what they mean for your mining profitability window.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <h3>Energy & Efficiency Strategies</h3>
+        <p>Actionable tips on power cost reduction, hosting deal evaluation, and maximizing efficiency per terahash.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">₿</div>
+        <h3>Bitcoin Market Context</h3>
+        <p>Connect price action, halving cycles, and macro trends to mining economics — so you can make better decisions.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER CTA -->
+  <section class="footer-cta">
+    <h2>Ready to gain the edge?</h2>
+    <p>Free insights, zero fluff. Built for serious miners.</p>
+    <form class="form-row" style="max-width:420px;margin:0 auto;" id="emailForm2" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <input type="email" name="email" placeholder="your@email.com" required autocomplete="email"
+        style="flex:1;padding:.9rem 1.1rem;background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:.95rem;font-family:'Inter',sans-serif;outline:none;" />
+      <button type="submit" class="btn-primary">Join Free →</button>
+    </form>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 KM Dynamic Labs · <a href="mailto:kmurch1@yahoo.com">Contact</a></p>
+  </footer>
+
+  <script>
+    // Handle form submission with Formspree AJAX
+    function handleForm(formEl, successId) {
+      formEl.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const btn = formEl.querySelector('button');
+        btn.textContent = 'Submitting…';
+        btn.disabled = true;
+        try {
+          const res = await fetch(formEl.action, {
+            method: 'POST',
+            body: new FormData(formEl),
+            headers: { 'Accept': 'application/json' }
+          });
+          if (res.ok) {
+            formEl.style.display = 'none';
+            if (successId) {
+              document.getElementById(successId).style.display = 'block';
+            } else {
+              formEl.insertAdjacentHTML('afterend', '<p style="color:var(--green);margin-top:.75rem;">✅ You\'re on the list!</p>');
+            }
+          } else {
+            btn.textContent = 'Try again';
+            btn.disabled = false;
+          }
+        } catch {
+          btn.textContent = 'Try again';
+          btn.disabled = false;
+        }
+      });
+    }
+
+    handleForm(document.getElementById('emailForm'),  'successMsg');
+    handleForm(document.getElementById('emailForm2'), null);
+  </script>
+
+</body>
+</html>
