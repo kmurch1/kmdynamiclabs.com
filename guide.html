@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bitcoin Mining Quick Start Guide — KM Dynamic Labs</title>
+  <meta name="description" content="A practical guide to Bitcoin mining covering hardware, hosting, cloud mining, and trusted recommendations from KM Dynamic Labs." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #090c10;
+      --bg2:      #0f1318;
+      --border:   #1e2530;
+      --gold:     #f5a623;
+      --gold-dim: #c8841a;
+      --text:     #e8eaf0;
+      --muted:    #7a8394;
+      --green:    #22c55e;
+      --red:      #ef4444;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(245,166,35,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245,166,35,.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      height: 64px;
+      background: rgba(9,12,16,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: .04em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .logo span { color: var(--gold); }
+
+    .nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .5rem 1.25rem;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-weight: 600;
+      font-size: .85rem;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: border-color .2s, color .2s;
+    }
+    .nav-back:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ── HERO ── */
+    .guide-hero {
+      position: relative;
+      z-index: 1;
+      padding: 120px 5% 56px;
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .35rem 1rem;
+      border: 1px solid rgba(245,166,35,.35);
+      border-radius: 999px;
+      font-family: 'Space Mono', monospace;
+      font-size: .75rem;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      background: rgba(245,166,35,.07);
+    }
+
+    .guide-hero h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -.02em;
+      margin-bottom: 1rem;
+    }
+
+    .guide-hero h1 em {
+      font-style: normal;
+      color: var(--gold);
+    }
+
+    .guide-hero p {
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.7;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    /* ── TABLE OF CONTENTS ── */
+    .toc {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto 3rem;
+      padding: 0 5%;
+    }
+
+    .toc-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem 2rem;
+    }
+
+    .toc-label {
+      font-family: 'Space Mono', monospace;
+      font-size: .7rem;
+      color: var(--gold);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .toc-box ol {
+      list-style: none;
+      counter-reset: toc;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: .45rem .75rem;
+    }
+
+    .toc-box ol li { counter-increment: toc; }
+
+    .toc-box ol li a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .875rem;
+      transition: color .15s;
+    }
+    .toc-box ol li a:hover { color: var(--gold); }
+
+    .toc-box ol li a::before {
+      content: counter(toc, upper-roman) ". ";
+      color: var(--gold);
+      font-family: 'Space Mono', monospace;
+      font-size: .7rem;
+    }
+
+    /* ── GUIDE CONTENT ── */
+    .guide-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 5% 6rem;
+    }
+
+    .guide-section { margin-bottom: 3.5rem; }
+
+    .section-num {
+      font-family: 'Space Mono', monospace;
+      font-size: .7rem;
+      color: var(--gold);
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      margin-bottom: .4rem;
+    }
+
+    .guide-section h2 {
+      font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      padding-bottom: .75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .guide-item {
+      margin-bottom: 1.5rem;
+      padding-left: 1.25rem;
+      border-left: 2px solid var(--border);
+      transition: border-color .2s;
+    }
+    .guide-item:hover { border-left-color: rgba(245,166,35,.4); }
+
+    .guide-item h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: .4rem;
+    }
+
+    .guide-item p {
+      font-size: .925rem;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .guide-item p + p { margin-top: .6rem; }
+
+    .guide-item ul {
+      list-style: none;
+      margin-top: .5rem;
+    }
+
+    .guide-item ul li {
+      font-size: .9rem;
+      color: var(--muted);
+      line-height: 1.65;
+      padding: .2rem 0;
+    }
+
+    .guide-item ul li::before {
+      content: '→ ';
+      color: var(--gold);
+      font-size: .8rem;
+    }
+
+    .guide-item ul li strong { color: var(--text); }
+
+    /* ── CALLOUTS ── */
+    .callout {
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin: .9rem 0;
+      font-size: .9rem;
+      line-height: 1.7;
+    }
+
+    .callout strong {
+      display: block;
+      margin-bottom: .3rem;
+      font-size: .7rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      font-family: 'Space Mono', monospace;
+    }
+
+    .callout-warn {
+      background: rgba(239,68,68,.08);
+      border: 1px solid rgba(239,68,68,.3);
+      color: #fca5a5;
+    }
+    .callout-warn strong { color: var(--red); }
+
+    .callout-tip {
+      background: rgba(245,166,35,.07);
+      border: 1px solid rgba(245,166,35,.3);
+      color: var(--text);
+    }
+    .callout-tip strong { color: var(--gold); }
+
+    /* ── DISCLOSURE ── */
+    .disclosure {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+    }
+    .disclosure p {
+      font-size: .9rem;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+    .disclosure p + p { margin-top: .75rem; }
+
+    /* ── CONTACT CTA ── */
+    .contact-cta {
+      text-align: center;
+      padding: 2.5rem;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 2rem;
+    }
+    .contact-cta p {
+      color: var(--muted);
+      font-size: .95rem;
+      line-height: 1.7;
+      margin-bottom: 1.25rem;
+    }
+    .contact-cta a.btn {
+      display: inline-flex;
+      align-items: center;
+      padding: .75rem 1.5rem;
+      background: var(--gold);
+      color: #000;
+      font-weight: 700;
+      font-size: .9rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background .2s;
+    }
+    .contact-cta a.btn:hover { background: #ffc04a; }
+
+    .back-to-top {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .6rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .85rem;
+      transition: border-color .2s, color .2s;
+      margin-top: 1rem;
+    }
+    .back-to-top:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 1.5rem 5%;
+      border-top: 1px solid var(--border);
+      font-size: .8rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+
+    @media (max-width: 540px) {
+      .nav-back span { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="top">
+    <a href="/" class="logo">KM<span>▸</span>Dynamic Labs</a>
+    <a href="/" class="nav-back">← <span>Back to Home</span></a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="guide-hero">
+    <div class="badge">Exclusive Member Guide</div>
+    <h1>Bitcoin Mining<br><em>Quick Start Guide</em></h1>
+    <p>Everything you need to know to get started mining Bitcoin — hardware, hosting, cloud options, and trusted recommendations.</p>
+  </div>
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc">
+    <div class="toc-box">
+      <p class="toc-label">Contents</p>
+      <ol>
+        <li><a href="#miners">Bitcoin Miners</a></li>
+        <li><a href="#hosting">Hosting Companies</a></li>
+        <li><a href="#cloud">Cloud Mining Apps</a></li>
+        <li><a href="#recommended">Recommended Hosting</a></li>
+        <li><a href="#other">Other Recommendations</a></li>
+        <li><a href="#disclosure">Full Disclosure</a></li>
+        <li><a href="#additional">Additional Information</a></li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="guide-content">
+
+    <!-- I -->
+    <section class="guide-section" id="miners">
+      <p class="section-num">Section I</p>
+      <h2>Bitcoin Miners</h2>
+
+      <div class="guide-item">
+        <h3>Terahash (TH)</h3>
+        <p>A miner's performance is measured in hashes (calculations) per second. A 200 TH miner performs 200 trillion hashes per second.</p>
+      </div>
+
+      <div class="guide-item">
+        <h3>Watts per Terahash (w/TH)</h3>
+        <p>A miner's efficiency is rated by watts per terahash. Less is more — a lower w/TH rating means more efficient, more profitable mining.</p>
+      </div>
+
+      <div class="guide-item">
+        <h3>Difficulty</h3>
+        <p>Every week, the Bitcoin algorithm automatically adjusts how difficult it is to solve a block, targeting an average of 10 minutes per block.</p>
+        <ul>
+          <li>When more hashpower joins the network, blocks are solved faster — difficulty adjusts up</li>
+          <li>When miners go offline, difficulty adjusts down</li>
+          <li>As difficulty rises, efficiency becomes increasingly critical to profitability</li>
+        </ul>
+      </div>
+
+      <div class="guide-item">
+        <h3>Price per TH</h3>
+        <p>Miners are marketed by dollars per TH, but this does not reflect efficiency and can be misleading.</p>
+        <div class="callout callout-tip">
+          <strong>Key Insight</strong>
+          A miner rated at 30 w/TH might cost pennies per TH, while a miner rated at 10 w/TH could cost $20–$30 per TH. Always evaluate efficiency alongside price.
+        </div>
+      </div>
+
+      <div class="guide-item">
+        <h3>Where to Buy</h3>
+        <p>Manufacturers like Bitmain, MicroBT, and Bitdeer sell directly at MSRP, but online distributors or hosting facilities often have better deals.</p>
+        <ul>
+          <li>cryptominerbros.com</li>
+          <li>asicmarketplace.com</li>
+          <li>apextomining.com</li>
+        </ul>
+        <p style="margin-top:.5rem;">Hosting facilities are often more convenient for buyers who don't have access to cheap electricity at home.</p>
+      </div>
+    </section>
+
+    <!-- II -->
+    <section class="guide-section" id="hosting">
+      <p class="section-num">Section II</p>
+      <h2>Hosting Companies</h2>
+
+      <div class="guide-item">
+        <h3>Benefits</h3>
+        <p>Skip shipping costs, tariffs, and sometimes sales tax — while avoiding the heat, noise, and maintenance of running an ASIC miner yourself.</p>
+      </div>
+
+      <div class="guide-item">
+        <h3>Electric Rate</h3>
+        <p>Most hosting facilities charge 8 cents per kilowatt or less. 7–7.5 cents/kWh is common, but usually depends on how many units are ordered.</p>
+      </div>
+
+      <div class="guide-item">
+        <h3>Taxes &amp; Fees</h3>
+        <p>When shopping at hosting facilities, check all fees by adding miners to cart and going through checkout to reveal any deposits, setup fees, taxes, and credit card surcharges before committing.</p>
+      </div>
+
+      <div class="guide-item">
+        <h3>Location</h3>
+        <div class="callout callout-warn">
+          <strong>Avoid</strong>
+          Texas — heat and grid instability make it a poor choice for hosting.
+        </div>
+        <p>The USA and Canada have plenty of cool-weather regions for hosting, with the industry constantly expanding into new areas.</p>
+      </div>
+
+      <div class="guide-item">
+        <h3>Used Market</h3>
+        <p>The longer a unit exists, the more important it becomes to sell it during more profitable periods. Good hosting facilities will also have a thriving secondary market for used miners.</p>
+      </div>
+
+      <div class="guide-item">
+        <h3>Mining Pool</h3>
+        <p>Every miner connects to the Bitcoin network through a mining pool. A hosting facility will ask for your mining pool account name and network address. The top 4–5 pools make this process simple and easy to maintain.</p>
+      </div>
+    </section>
+
+    <!-- III -->
+    <section class="guide-section" id="cloud">
+      <p class="section-num">Section III</p>
+      <h2>Cloud Mining Apps</h2>
+
+      <div class="guide-item">
+        <h3>Scams</h3>
+        <div class="callout callout-warn">
+          <strong>Warning</strong>
+          Almost all apps and cloud mining "opportunities" are scams. Some pay out for a while before disappearing. Others maintain their presence by paying so little it's never profitable. Avoid these specifically:
+        </div>
+        <ul>
+          <li>Crypto Tab</li>
+          <li>Bitcoin Mining: Crypto Miner</li>
+          <li>Bitcoin Cloud Mining</li>
+        </ul>
+      </div>
+
+      <div class="guide-item">
+        <h3>Contracts</h3>
+        <p>There are legitimate platforms that sell temporary hashpower (like Nicehash), but this is always a gambler's game with no guarantee of returns.</p>
+      </div>
+
+      <div class="guide-item">
+        <h3>Gomining</h3>
+        <div class="callout callout-tip">
+          <strong>Recommended</strong>
+          A trusted digital platform running 15 EH/s of physical mining that sells permanent digital miners through the app or website.
+        </div>
+        <ul>
+          <li><strong>Start small / Start smart</strong> — Buy or create a new miner at 12 w/TH, then learn the platform before investing significantly</li>
+          <li><strong>App Wallet</strong> — In-app wallet that supports other cryptocurrencies, swaps, and conversions</li>
+          <li><strong>GMT Token</strong> — Gomining's own token on Ethereum, BSC, and Solana networks. Tradeable on Kraken or popular swap sites. Benefits include purchasing used miners, staking for yield, and fee discounts up to 20%</li>
+          <li><strong>External Wallets</strong> — Bitcoin can be sent to exchanges like Coinbase, but owning your own digital or physical wallet is preferred</li>
+          <li><strong>Miner Wars</strong> — An optional gamified mode where you join a clan and compete for simulated Bitcoin blocks with real results. Block rewards are split by hashpower and paid in Bitcoin, with GMT rewards for the winning miner</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- IV -->
+    <section class="guide-section" id="recommended">
+      <p class="section-num">Section IV</p>
+      <h2>My Recommended Hosting Facilities</h2>
+
+      <p style="color:var(--muted);font-size:.925rem;line-height:1.75;margin-bottom:1.25rem;">Unless you have your own free or cheap electricity, using a hosting facility is the way to go.</p>
+
+      <div class="callout callout-warn" style="margin-bottom:1.5rem;">
+        <strong>Avoid</strong>
+        Revolution Mining — They are a scam.
+      </div>
+
+      <div class="guide-item">
+        <h3>Compass Mining</h3>
+        <p>Best secondary market and a unique exclusion on Indiana sales tax. They charge 7.5 cents/kWh but add some watts for network equipment, bringing the effective rate to ~8 cents/kWh.</p>
+      </div>
+
+      <div class="guide-item">
+        <h3>Musk Miners</h3>
+        <p>Great overall miner selection and professional support, including slightly lower fees and repair costs. Charges 8 cents/kWh for a single miner and allows you to list your miner for resale.</p>
+      </div>
+
+      <div class="guide-item">
+        <h3>Crypto Caddy</h3>
+        <p>7.5 cent electric cost with pay-for-what-you-use billing. Good miner deals can be harder to find, and the repair process can be complicated and expensive — but the pricing is competitive.</p>
+      </div>
+    </section>
+
+    <!-- V -->
+    <section class="guide-section" id="other">
+      <p class="section-num">Section V</p>
+      <h2>Other Recommendations</h2>
+
+      <div class="guide-item">
+        <h3>Gomining</h3>
+        <p>The only cloud mining platform I recommend — especially for beginners or busy people who want a passive income stream without managing physical hardware.</p>
+      </div>
+
+      <div class="guide-item">
+        <h3>Kraken</h3>
+        <p>My preferred exchange. Supports GMT and was the easiest platform to open a business account with.</p>
+      </div>
+
+      <div class="guide-item">
+        <h3>ViaBTC</h3>
+        <p>My preferred mining pool. Clean interface with strong monitoring and reporting tools. One of the top 4 pools globally, with advanced payout methods available.</p>
+      </div>
+
+      <div class="guide-item">
+        <h3>Wallets</h3>
+        <p>Phantom is a solid free option. My top pick is Tangem for its unique security features and organization tools.</p>
+      </div>
+    </section>
+
+    <!-- VI -->
+    <section class="guide-section" id="disclosure">
+      <p class="section-num">Section VI</p>
+      <h2>Full Disclosure</h2>
+      <div class="disclosure">
+        <p>I am currently affiliated with Kraken, Gomining, ViaBTC, and Tangem. I am also soon to be affiliated with Compass Mining.</p>
+        <p>I didn't use AI for any of the information in this guide, but I recommend having a conversation with AI about any of the topics covered to get updated information and calculations before investing any money.</p>
+      </div>
+    </section>
+
+    <!-- VII -->
+    <section class="guide-section" id="additional">
+      <p class="section-num">Section VII</p>
+      <h2>Additional Information</h2>
+
+      <div class="guide-item">
+        <p>Many platforms offer lessons and advice on Bitcoin mining, cryptocurrency trading, and safe asset handling.</p>
+        <p>None of this is financial advice and I am not a financial advisor.</p>
+      </div>
+
+      <div class="contact-cta">
+        <p>Have questions about any of the products or topics covered in this guide? I'm happy to help.</p>
+        <a href="mailto:hello@kmdynamiclabs.com" class="btn">Contact Me →</a>
+      </div>
+    </section>
+
+    <a href="#top" class="back-to-top">↑ Back to top</a>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 KM Dynamic Labs · <a href="mailto:hello@kmdynamiclabs.com">Contact</a></p>
+  </footer>
+
+</body>
+</html>

@@ -457,6 +457,7 @@
             } else {
               formEl.insertAdjacentHTML('afterend', '<p style="color:var(--green);margin-top:.75rem;">✅ You\'re on the list!</p>');
             }
+            setTimeout(() => { window.location.href = '/guide.html'; }, 1500);
           } else {
             btn.textContent = 'Try again';
             btn.disabled = false;
